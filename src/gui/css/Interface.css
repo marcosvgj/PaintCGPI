@@ -1,0 +1,103 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+
+.button{
+	-fx-base:#20B2AA;	
+}
+
+.combo-box-base  {
+    -fx-background-color: null;  
+}
+ 
+.combo-box-base:hover  {
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 8, 0.0 , 0 , 0 );
+}
+
+.label{
+	-fx-background: #808080;
+	-fx-base: #808080;
+ 	-fx-font: 12px Arial;
+}
+
+.choice-box .context-menu { 
+	-fx-background-color: #e6e6e6;
+}
+
+.tab{
+    -fx-background-color:   -fx-background;
+    -fx-background: white ;
+}
+
+.tab:hover{
+    -fx-background: #e6e6e6;
+}
+
+.tab:selected .tab-header-area{
+    -fx-background: black;
+}
+
+.choice-box .menu-item > .label { 
+	-fx-text-fill: white;
+}
+
+.choice-box .menu-item:focused > .label { 
+	-fx-text-fill: gold;
+}
+
+.choice-box > .label { 
+	-fx-text-fill: white;
+}
+
+.choice-box {
+  -fx-background-color: #e6e6e6;
+  -fx-mark-color: black;
+}
+
+#toolbar-button{
+    -fx-alignment: center ;
+    -fx-pref-width: 150px;
+    -fx-pref-height: 30px;
+}
+
+#background{
+	-fx-background-color: white
+}
+
+#background-esq{
+	-fx-background-color: white
+}
+#abas{
+	-fx-background-color: white
+}
+
+#ferramentas{
+	-fx-background-color: #e6e6e6
+}
+
+  
+.menu-bar {
+	-fx-background-color: linear-gradient(to bottom,
+		-fx-base, derive(-fx-base,70%)
+	);
+}
+
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-opacity: 0;
+    -fx-pref-width:150; 
+}
+
+.tab .tab-label { 
+    -fx-alignment: CENTER;
+    -fx-text-fill: #828282;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.tab:selected .tab-label { 
+    -fx-alignment: CENTER;
+    -fx-text-fill: black;
+}
+
+.tab:no-selected .tab-label { 
+    -fx-alignment: CENTER;
+    -fx-text-fill: green;
+}
