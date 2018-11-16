@@ -271,7 +271,7 @@ public class Gui extends Application {
 
 		Scene scene = new Scene(scene_dispose, 1200, 600);
 
-		scene.getStylesheets().add("default_package/Interface.css");
+		scene.getStylesheets().add("gui/css/Interface.css");
 
 		window.setScene(scene);
 
