@@ -14,7 +14,7 @@ public abstract class FormaGr {
 	
 	public abstract void rotacionar(Ponto q, double angulo);
 	 
-	public abstract void escalar(double fatorEscala);
+	public abstract void escalar(Ponto q, double fatorX, double fatorY);
 	
 	public abstract void trasladar(int distanciaX, int distanciaY);
 	

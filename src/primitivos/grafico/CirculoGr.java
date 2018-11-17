@@ -107,11 +107,15 @@ public class CirculoGr extends FormaGr {
 	}
 
 	@Override
-	public void escalar(double fatorEscala) {
+	public void escalar(Ponto q, double fatorX, double fatorY ) {
 		
-		double raio = this.circulo.getRaio() * fatorEscala;
+		OperacoesMatematicas op = new OperacoesMatematicas();
 		
-		this.circulo =  new Circulo(this.circulo.getCentro(), raio);
+		double raio = this.circulo.getRaio() * ((fatorX * fatorY)/2) ;
+		
+		Ponto centro = op.escalar(this.circulo.getCentro(), q, fatorX, fatorY);
+		
+		this.circulo =  new Circulo(centro, raio);
 	}
 
 	@Override

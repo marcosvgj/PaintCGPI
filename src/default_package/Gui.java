@@ -39,7 +39,7 @@ public class Gui extends Application {
 	public void start(Stage window) throws IOException {
 
 		tela.setOperacao(ModusOperandi.NENHUM);
-		
+
 		tela.setCor(Color.BLACK);
 
 		/* Declaração de Botoes e ferramentas do Javafx - Formas */
@@ -51,7 +51,7 @@ public class Gui extends Application {
 		Button btnRetangulo = new Button();
 
 		Button btnPoligono = new Button();
-		
+
 		Button btnLinhaPoligonal = new Button();
 
 		Button btnBorracha = new Button();
@@ -73,9 +73,9 @@ public class Gui extends Application {
 		Button btnRecortar = new Button();
 
 		ColorPicker cpSelecionarCor = new ColorPicker(Color.BLACK);
-		
-		cpSelecionarCor.getStyleClass().add("button"); 
-		
+
+		cpSelecionarCor.getStyleClass().add("button");
+
 		cpSelecionarCor.setPrefWidth(100);
 
 		/* Estruturas de dados auxiliares - Formas */
@@ -107,7 +107,7 @@ public class Gui extends Application {
 		Botoes.put("rotacao", btnRotacao);
 
 		Botoes.put("recortar", btnRecortar);
-		
+
 		Botoes.put("linhaPoligonal", btnLinhaPoligonal);
 
 		/* Adição de icones p/ cada botão */
@@ -127,13 +127,13 @@ public class Gui extends Application {
 		Image ico = new Image("gui/icones/icone.png");
 
 		window.getIcons().add(ico);
-		
+
 		btnSelecionar.setDisable(true);
 
 		btnRecortar.setDisable(true);
 
 		btnApagarForma.setDisable(true);
-		
+
 		btnEscala.setDisable(true);
 
 		btnTransladar.setDisable(true);
@@ -159,7 +159,7 @@ public class Gui extends Application {
 		gridFormas.add(btnRetangulo, 2, 0);
 
 		gridFormas.add(btnPoligono, 3, 0);
-		
+
 		gridFormas.add(btnLinhaPoligonal, 4, 0);
 
 		gridSelecao.add(btnSelecionar, 0, 0);
@@ -276,7 +276,7 @@ public class Gui extends Application {
 		window.setScene(scene);
 
 		window.setTitle("Computacao Grafica - CGPI 2018");
-		
+
 		window.setMaximized(true);
 
 		window.show();
@@ -338,8 +338,7 @@ public class Gui extends Application {
 
 			}
 		};
-		
-		
+
 		EventHandler<MouseEvent> event_btnLinhaPoligonal = new EventHandler<MouseEvent>() {
 
 			@Override
@@ -362,13 +361,13 @@ public class Gui extends Application {
 				tela.resetarTela(gc);
 
 				tOperacao.setText(ModusOperandi.LIMPAR.toString());
-				
+
 				btnEscala.setDisable(true);
 
 				btnTransladar.setDisable(true);
 
 				btnRotacao.setDisable(true);
-				
+
 				btnSelecionar.setDisable(true);
 
 				btnRecortar.setDisable(true);
@@ -402,7 +401,7 @@ public class Gui extends Application {
 				tela.setOperacao(ModusOperandi.SELECIONAR);
 
 				tOperacao.setText(ModusOperandi.SELECIONAR.toString());
-				
+
 				btnEscala.setDisable(false);
 
 				btnTransladar.setDisable(false);
@@ -410,8 +409,6 @@ public class Gui extends Application {
 				btnRotacao.setDisable(false);
 
 				e.consume();
-				
-				
 
 			}
 		};
@@ -435,45 +432,110 @@ public class Gui extends Application {
 			@Override
 			public void handle(MouseEvent e) {
 
-				tela.setOperacao(ModusOperandi.ESCALA);
+				if (tela.pReferencia == true) {
 
-				tOperacao.setText(ModusOperandi.ESCALA.toString());
+					tela.setOperacao(ModusOperandi.ESCALA);
 
-				TextInputDialog dialog = new TextInputDialog("1");
+					tOperacao.setText(ModusOperandi.ESCALA.toString());
 
-				dialog.setTitle("Transformações Geométricas");
+					TextInputDialog dialog = new TextInputDialog("1");
 
-				dialog.setHeaderText("Escala");
+					dialog.setTitle("Transformações Geométricas");
 
-				ImageView image_view = new ImageView("gui/icones/escala.png");
+					dialog.setHeaderText("Escala");
 
-				image_view.setFitWidth(25);
+					ImageView image_view = new ImageView("gui/icones/escala.png");
 
-				image_view.setFitHeight(25);
+					image_view.setFitWidth(25);
 
-				dialog.setGraphic(image_view);
+					image_view.setFitHeight(25);
 
-				dialog.setContentText("Insira o fator escalar: ");
+					dialog.setGraphic(image_view);
 
-				try {
+					Label sx = new Label("Sx: ");
+
+					Label sy = new Label("Sy: ");
+
+					TextField sxText = new TextField();
+
+					sxText.setPrefWidth(50);
+
+					TextField syText = new TextField();
+
+					syText.setPrefWidth(50);
+
+					GridPane grid = new GridPane();
+
+					grid.add(sx, 2, 2);
+
+					grid.add(sxText, 3, 2);
+
+					grid.add(sy, 2, 3);
+
+					grid.add(syText, 3, 3);
+
+					dialog.getDialogPane().setContent(grid);
 
 					Optional<String> result = dialog.showAndWait();
 
-					if (result.get().matches("[0-9]{1,13}(\\.[0-9]*)?")) {
+					if (result.isPresent()) {
 
-						tela.escalarSelecionado(gc, Integer.parseInt(result.get().trim()));
+						try {
+							double fatorX = Double.parseDouble(sxText.getText());
+
+							double fatorY = Double.parseDouble(syText.getText());
+
+							tela.escalarSelecionado(gc, fatorX, fatorY);
+
+							tela.pReferencia = false;
+
+						} catch (Exception er) {
+
+							tOperacao.setText(" \t Erro: Valor Inválido");
+
+						}
+					} else {
+
+						tela.pReferencia = false;
+
+						tela.apagarTela(gc);
+
+						tela.redesenhar(gc);
+
+					}
+
+					e.consume();
+				} else {
+
+					Alert alert = new Alert(AlertType.INFORMATION);
+
+					alert.setTitle("Escala");
+
+					alert.setHeaderText("Instruções para Escala");
+
+					ImageView image_view = new ImageView("gui/icones/escala.png");
+
+					image_view.setFitWidth(25);
+
+					image_view.setFitHeight(25);
+
+					alert.setGraphic(image_view);
+
+					if (tela.formaSelecionada == null) {
+
+						alert.setContentText("Selecione uma forma para a transformação geométrica");
 
 					} else {
-						throw new Exception("Valor fora do padrão Double");
+
+						alert.setContentText(" 1 - Clique para declarar o ponto de referência utilizado na rotação. \n"
+								+ " 2 - Acione o botão de escala novamente e insira os fatores Sx e Sy para efetuar a operação. ");
+
+						alert.showAndWait();
+
+						tela.setOperacao(ModusOperandi.ESCALA);
 					}
-				} catch (Exception er) {
-					
-					tOperacao.setText(" Erro: Valor Inválido");
-					
+
 				}
-
-				e.consume();
-
 			}
 		};
 
@@ -524,9 +586,9 @@ public class Gui extends Application {
 							throw new Exception("Valor fora do formato 'x,y'");
 						}
 					} catch (Exception er) {
-						
+
 						tOperacao.setText(" \t Erro: Valor Inválido");
-						
+
 					}
 				}
 
@@ -539,67 +601,71 @@ public class Gui extends Application {
 
 			@Override
 			public void handle(MouseEvent e) {
-		
-				if(tela.pRotacao == true) {
+
+				if (tela.pReferencia == true) {
 
 					TextInputDialog dialog = new TextInputDialog("0.0");
-	
+
 					dialog.setTitle("Transformações Geométricas");
-	
+
 					dialog.setHeaderText("Rotação");
-	
+
 					ImageView image_view = new ImageView("gui/icones/rotacao.png");
-	
+
 					image_view.setFitWidth(25);
-	
+
 					image_view.setFitHeight(25);
-	
+
 					dialog.setGraphic(image_view);
-	
+
 					dialog.setContentText("Ângulo da rotação: ");
-	
+
 					try {
 						Optional<String> result = dialog.showAndWait();
-	
-						if (result.get().matches("[0-9]{1,13}(\\.[0-9]*)?")) {
-	
-							tela.rotacionarSelecionado(gc, Double.parseDouble(result.get()));
-	
-						} else {
-							throw new Exception("Valor fora do padrão Double");
-						}
+
+						tela.rotacionarSelecionado(gc, Double.parseDouble(result.get()));
+
+						tela.pReferencia = false;
+
 					} catch (Exception er) {
 						tOperacao.setText(" Erro: Valor Inválido");
-	
+
 					}
-	
+
 					e.consume();
-					
-					tela.pRotacao = false;
 
-				}
-				else {
-					
+					tela.pReferencia = false;
+
+				} else {
+
 					Alert alert = new Alert(AlertType.INFORMATION);
-					
+
 					alert.setTitle("Rotação");
-					
-					alert.setHeaderText(null);
-					
-					if(tela.formaSelecionada == null) {
-						
+
+					alert.setHeaderText("Instruções para Rotação");
+
+					ImageView image_view = new ImageView("gui/icones/rotacao.png");
+
+					image_view.setFitWidth(25);
+
+					image_view.setFitHeight(25);
+
+					alert.setGraphic(image_view);
+
+					if (tela.formaSelecionada == null) {
+
 						alert.setContentText("Selecione uma forma para a transformação geométrica");
-						
-					}
-					else {
-						
-						alert.setContentText("Declare o ponto de referência para a rotação!");
-						
+
+					} else {
+
+						alert.setContentText(" 1 - Clique para declarar o ponto de referência utilizado na rotação. \n"
+								+ " 2 - Acione o botão de rotação novamente e insira o ângulo a ser rotacionado para efetuar a operação. ");
+
+						alert.showAndWait();
+
+						tela.setOperacao(ModusOperandi.ROTACIONAR);
 					}
 
-					alert.showAndWait();
-					
-					tela.setOperacao(ModusOperandi.ROTACIONAR);
 				}
 			}
 		};
@@ -615,9 +681,9 @@ public class Gui extends Application {
 				tOperacao.setText(tela.getOperacao().toString() + cursor);
 
 				e.consume();
-				
-				if(tela.formas.size() >= 1) {
-					
+
+				if (tela.formas.size() >= 1) {
+
 					btnSelecionar.setDisable(false);
 
 					btnRecortar.setDisable(false);
@@ -631,58 +697,56 @@ public class Gui extends Application {
 		btnSalvar.setOnAction(t -> {
 
 			try {
-                
-                FileChooser fileChooser = new FileChooser();
-                
-                //Set extension filter for text files
-                FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
-                fileChooser.getExtensionFilters().add(extFilter);
 
-                //Show save file dialog
-                File file = fileChooser.showSaveDialog(window);
+				FileChooser fileChooser = new FileChooser();
 
-                if (file != null) {
-                	
-                	FileWriter.write(file, tela.getFormas(), wrapperPane);
-                	
-                }
+				// Set extension filter for text files
+				FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
+				fileChooser.getExtensionFilters().add(extFilter);
 
-            } catch (Exception e) {
-                tOperacao.setText(" " + e.getMessage());
-            }
+				// Show save file dialog
+				File file = fileChooser.showSaveDialog(window);
 
+				if (file != null) {
 
+					FileWriter.write(file, tela.getFormas(), wrapperPane);
+
+				}
+
+			} catch (Exception e) {
+				tOperacao.setText(" " + e.getMessage());
+			}
 
 		});
 
 		btnImportar.setOnAction(t -> {
-			
+
 			tela.resetarTela(gc);
-			
+
 			tela.apagarTela(gc);
-			
+
 			final FileChooser fileChooser = new FileChooser();
 
-	        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
+			FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
 
-	        fileChooser.getExtensionFilters().add(extFilter);
+			fileChooser.getExtensionFilters().add(extFilter);
 
-	        File file = fileChooser.showOpenDialog(window);
-	        
+			File file = fileChooser.showOpenDialog(window);
+
 			FileReader fr = new FileReader();
-			
-			if(file != null) {
-				
+
+			if (file != null) {
+
 				boolean fullLoad = fr.readFile(file, wrapperPane);
-				
-				if(fullLoad) {
-					
+
+				if (fullLoad) {
+
 					tela.setForma(fr.getFormas());
-					
+
 					tela.redesenhar(gc);
-					
+
 				} else {
-					
+
 					tOperacao.setText(" Arquivo não pode ser lido");
 				}
 			}
@@ -716,7 +780,7 @@ public class Gui extends Application {
 		btnTransladar.addEventFilter(MouseEvent.MOUSE_CLICKED, eventBtnTrasladar);
 
 		btnRotacao.addEventFilter(MouseEvent.MOUSE_CLICKED, eventBtnRotacionar);
-		
+
 		btnLinhaPoligonal.addEventFilter(MouseEvent.MOUSE_CLICKED, event_btnLinhaPoligonal);
 
 		wrapperPane.addEventFilter(MouseEvent.ANY, event_rastrear_cursor);

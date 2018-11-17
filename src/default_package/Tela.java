@@ -46,9 +46,9 @@ public class Tela {
 
 	FormaGr formaSelecionada;
 
-	boolean pRotacao = false;
+	boolean pReferencia = false;
 
-	PontoGr pontoRotacao = null;
+	PontoGr pontoReferencia = null;
 
 	private Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 
@@ -198,13 +198,15 @@ public class Tela {
 	}
 
 	public void resetarTela(GraphicsContext gc) {
-		
+
 		this.formas = new ArrayList<FormaGr>();
 
 		this._poligono = new PoligonoGr(new ArrayList<Ponto>(), this.cor);
 
 		this._linhaPoligonal = new PoligonoGr(new ArrayList<Ponto>(), this.cor);
-		
+
+		this.pReferencia = false;
+
 		apagarTela(gc);
 
 	}
@@ -233,9 +235,9 @@ public class Tela {
 
 	}
 
-	public void escalarSelecionado(GraphicsContext gc, int fatorEscala) {
+	public void escalarSelecionado(GraphicsContext gc, Double fatorX, Double fatorY) {
 
-		formaSelecionada.escalar(fatorEscala);
+		formaSelecionada.escalar(pontoReferencia, fatorX, fatorY);
 
 		apagarTela(gc);
 
@@ -254,75 +256,73 @@ public class Tela {
 	}
 
 	public void recortar(GraphicsContext gc, RetanguloGr area) {
-		
+
 		apagarTela(gc);
 
 		CohenSutherland recorteReta = new CohenSutherland(area);
 
-        List<FormaGr> exclusao = new ArrayList<FormaGr>();
-        
-        List<FormaGr> novasFormas = new ArrayList<FormaGr>();
-        
+		List<FormaGr> exclusao = new ArrayList<FormaGr>();
+
+		List<FormaGr> novasFormas = new ArrayList<FormaGr>();
+
 		for (int i = 0; i < formas.size(); i++) {
 
 			if (formas.get(i) instanceof RetaGr) {
 
-				if(recorteReta.recortar((RetaGr) formas.get(i)) != null) {
-					
+				if (recorteReta.recortar((RetaGr) formas.get(i)) != null) {
+
 					formas.set(i, recorteReta.recortar((RetaGr) formas.get(i)));
-					
-				}
-				else {
-					
-					formas.set(i, new RetaGr(new Ponto(0,0), new Ponto(0,0), Color.WHITE));
-					
+
+				} else {
+
+					formas.set(i, new RetaGr(new Ponto(0, 0), new Ponto(0, 0), Color.WHITE));
+
 				}
 			}
-			
+
 			if (formas.get(i) instanceof PoligonoGr) {
-				
+
 				tools.recorte.WeilerAthertonPolygon recorte = new tools.recorte.WeilerAthertonPolygon(area);
-				
+
 				if (recorte.recortar((PoligonoGr) formas.get(i)) != null) {
-	            	
-	            	exclusao.add((PoligonoGr) formas.get(i));
 
-	            	for(PoligonoGr polig : recorte.recortar((PoligonoGr) formas.get(i))){
-	            		
-	            		novasFormas.add(polig);
-	            		
-	            	}
+					exclusao.add((PoligonoGr) formas.get(i));
 
-	            } else {
-	            	
-	            	formas.set(i, new PoligonoGr(new ArrayList<Ponto>(), Color.WHITE));
-	            	
-	            }
-				
+					for (PoligonoGr polig : recorte.recortar((PoligonoGr) formas.get(i))) {
+
+						novasFormas.add(polig);
+
+					}
+
+				} else {
+
+					formas.set(i, new PoligonoGr(new ArrayList<Ponto>(), Color.WHITE));
+
+				}
+
 			}
 			if (formas.get(i) instanceof CirculoGr) {
-				//TODO
+				// TODO
 			}
 
-    
 		}
-		
-		for (FormaGr excl: exclusao) {
-        	
-	    	formas.remove(excl);
-	        	
-	    }
-	        
-	    for (FormaGr x: novasFormas) {
-	        	
-	    	formas.add(x);
-	        	
-	    }
-}
+
+		for (FormaGr excl : exclusao) {
+
+			formas.remove(excl);
+
+		}
+
+		for (FormaGr x : novasFormas) {
+
+			formas.add(x);
+
+		}
+	}
 
 	public void rotacionarSelecionado(GraphicsContext gc, double angulo) {
 
-		formaSelecionada.rotacionar(pontoRotacao, angulo);
+		formaSelecionada.rotacionar(pontoReferencia, angulo);
 
 		apagarTela(gc);
 
@@ -512,17 +512,17 @@ public class Tela {
 
 		}
 
-		if (operacao == ModusOperandi.ROTACIONAR) {
+		if (operacao == ModusOperandi.ROTACIONAR || operacao == ModusOperandi.ESCALA) {
 
 			apagarTela(gc);
 
-			pontoRotacao = new PontoGr((int) e.getX(), (int) e.getY(), Color.BLACK, "P'");
+			pontoReferencia = new PontoGr((int) e.getX(), (int) e.getY(), Color.BLACK, "P'");
 
-			pontoRotacao.desenharPonto(gc);
+			pontoReferencia.desenharPonto(gc);
 
 			redesenhar(gc);
 
-			pRotacao = true;
+			pReferencia = true;
 
 		}
 

@@ -115,17 +115,17 @@ public class RetanguloGr extends FormaGr {
 	}
 
 	@Override
-	public void escalar(double fatorEscala) {
+	public void escalar(Ponto q, double fatorX, double fatorY ) {
 
 		OperacoesMatematicas op = new OperacoesMatematicas();
 
-		this.vertice1 = op.escalar(getVertice1(), fatorEscala);
+		this.vertice1 = op.escalar(getVertice1(), q, fatorX, fatorY);
 
-		this.vertice2 = op.escalar(getVertice2(), fatorEscala);
+		this.vertice2 = op.escalar(getVertice2(), q, fatorX, fatorY);
 
-		this.vertice3 = op.escalar(this.vertice3, fatorEscala);
+		this.vertice3 = op.escalar(this.vertice3, q, fatorX, fatorY);
 
-		this.vertice4 = op.escalar(this.vertice4, fatorEscala);
+		this.vertice4 = op.escalar(this.vertice4, q, fatorX, fatorY);
 
 	}
 

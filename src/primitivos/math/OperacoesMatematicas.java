@@ -48,38 +48,28 @@ public class OperacoesMatematicas {
         return new Ponto((int) x,(int) y);
     }
 
-    public Ponto escalar(Ponto p, double fatorDeEscala){
+    public Ponto escalar(Ponto p, Ponto q, double fatorX, double fatorY){
     	
-    	double x = p.getX() * fatorDeEscala;
-        
-        double y = p.getY() * fatorDeEscala;
-        
-        return new Ponto((int) x,(int) y);
+    	double x = (fatorX*p.getX()) + (q.getX()*(1-fatorX));
+    	
+    	double y = (p.getY()*fatorY) + (q.getY()*(1-fatorY)); 
+    	
+        return new Ponto(x, y);
 
     }
 
     public Ponto rotacionar(Ponto p, Ponto q, double angulo) {
-        
-        //Rotação em relação ao ponto central da viewport
-    	
-        //transladar -p atÃ© a origem
-        Ponto p_new = trasladar(p, (int)(-1*q.getX()), (int)(-1*q.getY()));
-
-        //rotacionar angulo
+       
         double rad = Math.toRadians(angulo);
         
-        double old_x = p_new.getX();
+        double x = (p.getX()*Math.cos(rad)) - (p.getY() * Math.sin(rad)) + ((q.getX()*(1- Math.cos(rad)))+ (q.getY()* Math.sin(rad)));
         
-        double old_y = p_new.getY();
+        double y = (p.getX()*Math.sin(rad)) + (p.getY()*Math.cos(rad)) + ((q.getY()*(1-Math.cos(rad))) - ((q.getX()*Math.sin(rad))));
         
-        double x = old_x * Math.cos(rad) - old_y * Math.sin(rad);
+        return new Ponto(x, y);
         
-        double y = old_x * Math.sin(rad) + old_y * Math.cos(rad);
         
-
-        //desfazer a translacao
-
-        return trasladar(new Ponto(x,y), (int)(q.getX()), (int)(q.getY()));
+        
         
     }
 

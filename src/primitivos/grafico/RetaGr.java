@@ -146,13 +146,13 @@ public class RetaGr extends FormaGr {
 	}
 
 	@Override
-	public void escalar(double fatorEscala) {
+	public void escalar(Ponto q, double fatorX, double fatorY ) {
 		
 		OperacoesMatematicas op = new OperacoesMatematicas();
 		
-		Ponto p1 = op.escalar(this.reta.getP1(), fatorEscala);
+		Ponto p1 = op.escalar(this.reta.getP1(), q, fatorX, fatorY);
 		
-		Ponto p2 = op.escalar(this.reta.getP2(), fatorEscala);
+		Ponto p2 = op.escalar(this.reta.getP2(), q, fatorX, fatorY);
 		
 		this.reta = new Reta(p1, p2);
 		

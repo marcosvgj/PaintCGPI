@@ -148,7 +148,7 @@ public class PoligonoGr extends FormaGr {
 	}
 
 	@Override
-	public void escalar(double fatorEscala) {
+	public void escalar(Ponto q, double fatorX, double fatorY ) {
 
 		OperacoesMatematicas op = new OperacoesMatematicas();
 
@@ -156,7 +156,7 @@ public class PoligonoGr extends FormaGr {
 
 		for (Ponto p : this.getPontos()) {
 
-			novosPontos.add(op.escalar(p, fatorEscala));
+			novosPontos.add(op.escalar(p, q, fatorX, fatorY ));
 		}
 
 		setPontos(new ArrayList<Ponto>(novosPontos));
