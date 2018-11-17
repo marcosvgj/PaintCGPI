@@ -36,6 +36,27 @@ public class OperacoesMatematicas {
     public static void interseccaoRetaCirculo(Reta r0, Circulo c0) {
     	
     	// TODO 
+    	
+    	/*
+    	 * IDEIA:
+    	 *  
+    	 *  Para cada reta do retangulo de recorte: 
+    	
+    		* Identificar a intersecção da reta e da circunferência
+    		* Se há dois pontos de intersecção na reta corrente, logo a reta é secante a circunferência, 
+    		* se enquadrando no seguinte tratamento: 
+    			- Gerar um novo ponto definido por (cX, rY), sendo cX a coordenada x do ponto central da circunferência
+    			e rY o eixo da abscissa Y da reta avaliada. 
+    			- Identificar os dois arco tangente formado entre os pontos de intersecção e o novo ponto central.
+    			- Desenhar os arcos, preservando a borda determinada pela reta R.
+    			   	
+    		* Se há somente um ponto de intersecção, procurar o outro ponto de intersecção da circunferência em relação a
+    		* outras retas do retângulo de recorte:
+				- Se achou os dois pontos, adquirir o angulo formado pelos dois vetores com origem no ponto (cX, rY).
+				- Desenhar o arco tangente
+    	
+    	*/ 
+    	
 		
    }
     

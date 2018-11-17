@@ -15,8 +15,6 @@ public class recorteCirculo {
 	}
 	
 	public void recortarCirculo(CirculoGr c){
-		
-		List<RetaGr> retas = recorte.calcularRetas();
 
 		
 	}
