@@ -126,11 +126,3 @@ public class CohenSutherland {
 	} 
 
 }
-
-	 
-	  
-	 
-	 
-	 
-
-
