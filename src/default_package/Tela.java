@@ -302,7 +302,19 @@ public class Tela {
 
 			}
 			if (formas.get(i) instanceof CirculoGr) {
-				// TODO
+				for(RetaGr r: area.calcularRetas()) {
+					
+					CirculoGr c0 = (CirculoGr) formas.get(i);
+					
+					List<Ponto> op = OperacoesMatematicas.interseccaoRetaCirculo(r.getReta(), c0.getCirculo());
+					
+					for(Ponto p: op) {
+						System.out.println(p);
+						PontoGr pNovo = new PontoGr((int) p.getX(),(int)  p.getY(), Color.RED, 10);
+						
+						pNovo.desenharPonto(gc);
+					}
+				}
 			}
 
 		}

@@ -33,7 +33,7 @@ public class OperacoesMatematicas {
         
     }
     
-    public static void interseccaoRetaCirculo(Reta r0, Circulo c0) {
+    public static List<Ponto> interseccaoRetaCirculo(Reta r0, Circulo c0) {
     	
     	// TODO 
     	
@@ -43,6 +43,7 @@ public class OperacoesMatematicas {
     	 *  Para cada reta do retangulo de recorte: 
     	
     		* Identificar a intersecção da reta e da circunferência
+    		* 
     		* Se há dois pontos de intersecção na reta corrente, logo a reta é secante a circunferência, 
     		* se enquadrando no seguinte tratamento: 
     			- Gerar um novo ponto definido por (cX, rY), sendo cX a coordenada x do ponto central da circunferência
@@ -56,8 +57,54 @@ public class OperacoesMatematicas {
 				- Desenhar o arco tangente
     	
     	*/ 
+    	EquacaoReta equacao = new EquacaoReta(r0);
     	
-		
+    	System.out.printf("\n Reta: (%f, %f) - (%f, %f) \n", r0.getP1().getX(), r0.getP1().getY(),
+    			r0.getP2().getX(), r0.getP2().getY());
+    	
+    	double m =  equacao.calculaM();
+    	
+    	double b =  equacao.calculaB();
+    	
+    	double formA = m + 1 ;
+    	
+    	double formB = (2*m*b) - (2*c0.getCentro().getX()) - (2*c0.getCentro().getY());
+    	
+    	double formC = Math.pow(b, 2) + (2*c0.getCentro().getY()*b) + Math.pow(c0.getCentro().getX(), 2) +
+    			Math.pow(c0.getCentro().getY(), 2) - Math.pow(c0.getRaio(), 2);
+    			
+    	
+    	double delta = Math.pow(formB, 2) - 4*formA*formC;
+    	
+    	System.out.printf("m: %f \n", m);
+    	
+    	System.out.printf("b: %f \n", b);
+    	
+    	System.out.printf("formA: %f \n", formA);
+    	
+    	System.out.printf("formB: %f \n", formB);
+    	
+    	System.out.printf("formC: %f \n", formC);
+    	
+    	System.out.println(" \n Fim iteracao \n" );
+    	
+    	if(delta < 0) {
+    		
+    			return Arrays.asList(new Ponto(0,0), new Ponto(0,0));
+    			
+    	}
+    	
+
+    	double x1 = ((-1*formB) + Math.sqrt(delta))/2*formA;
+    	
+    	double x2 = ((-1*formB) - Math.sqrt(delta))/2*formA;
+    	
+    	double y1 = m*x1+b;
+    	
+    	double y2 = m*x2+b;
+    	
+    	return Arrays.asList(new Ponto(x1, y1), new Ponto(x2, y2));
+    	
    }
     
     public Ponto trasladar(Ponto p, int fatorX, int fatorY){
@@ -96,3 +143,4 @@ public class OperacoesMatematicas {
 
 
 }
+

@@ -23,8 +23,8 @@ public class EquacaoReta {
 	}
 	
 	public double calculaM(){
-        
-        double m = (p2.getY()-p1.getY())/(p2.getX()-p1.getX());
+
+		double m = (p2.getY()-p1.getY())/(p2.getX()-p1.getX());
         
         return m;
     }
