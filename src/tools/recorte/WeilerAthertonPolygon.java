@@ -73,11 +73,7 @@ public class WeilerAthertonPolygon {
 
 		List<PoligonoGr> poligonosResultantes = new ArrayList<PoligonoGr>();
 
-		List<List<Ponto>> pontos = new ArrayList<List<Ponto>>();
-
-		pontos.add(new ArrayList<Ponto>());
-
-		int indice = 0;
+		List<Ponto> pontos = new ArrayList<Ponto>();
 
 		int inout;
 
@@ -103,42 +99,78 @@ public class WeilerAthertonPolygon {
 
 				pontoNovo = this.calcularIntersec(area_recorte, new Reta(p_corrente, p_proximo));
 
-				pontos.get(indice).add(pontoNovo);
+				if (pontoNovo != null) {
+
+					pontos.add(pontoNovo);
+
+				}
 
 			}
 
 			else if (inout == 0 && inoutNext == 1) {
 
-				pontos.add(new ArrayList<Ponto>());
-
 				Ponto pontoNovo;
-
-				PoligonoGr novoPoligono;
 
 				pontoNovo = this.calcularIntersec(area_recorte, new Reta(p_corrente, p_proximo));
 
-				pontos.get(indice).add(p_corrente);
+				pontos.add(p_corrente);
 
-				pontos.get(indice).add(pontoNovo);
+				pontos.add(pontoNovo);
 
-				pontos.get(indice).add(pontos.get(indice).get(0));
+				pontos.add(pontos.get(0));
 
-				novoPoligono = new PoligonoGr(pontos.get(indice));
+				poligonosResultantes.add(new PoligonoGr(new ArrayList<Ponto>(pontos), p.getCor()));
 
-				novoPoligono.setPoligonoFechado(true);
+				poligonosResultantes.get(poligonosResultantes.size() - 1).setPoligonoFechado(true);
 
-				poligonosResultantes.add(new PoligonoGr(novoPoligono.getPontos(), p.getCor()));
-
-				indice++;
+				pontos = new ArrayList<Ponto>();
 
 			}
 
 			else if (inout == 0 && inoutNext == 0) {
 
-				pontos.get(indice).add(p_corrente);
+				for (RetaGr rt : area_recorte.calcularRetas()) {
+
+					if (OperacoesMatematicas.interseccaoRetas(rt.getReta(), new Reta(p_corrente, p_proximo)) != null) {
+
+						pontos.add(
+								OperacoesMatematicas.interseccaoRetas(rt.getReta(), new Reta(p_corrente, p_proximo)));
+
+						break;
+
+					}
+
+				}
 
 			}
 
+		}
+		
+		if(p.getPoligonoFechado() == true) {
+			
+			p_corrente = p.getPontos().get(p.getPontos().size()-1);
+
+			p_proximo = p.getPontos().get(0);
+			
+			for (RetaGr rt : area_recorte.calcularRetas()) {
+
+				if (OperacoesMatematicas.interseccaoRetas(rt.getReta(), new Reta(p_corrente, p_proximo)) != null) {
+
+					pontos.add(
+							OperacoesMatematicas.interseccaoRetas(rt.getReta(), new Reta(p_corrente, p_proximo)));
+
+					break;
+
+				}
+
+			}
+			
+			if(pontos.size() >= 1 ) {
+				
+				poligonosResultantes.add(new PoligonoGr(new ArrayList<Ponto>(pontos), p.getCor()));
+				
+			}
+			
 		}
 
 		return poligonosResultantes;
