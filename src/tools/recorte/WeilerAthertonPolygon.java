@@ -145,32 +145,31 @@ public class WeilerAthertonPolygon {
 			}
 
 		}
-		
-		if(p.getPoligonoFechado() == true) {
-			
-			p_corrente = p.getPontos().get(p.getPontos().size()-1);
+
+		if (p.getPoligonoFechado() == true) {
+
+			p_corrente = p.getPontos().get(p.getPontos().size() - 1);
 
 			p_proximo = p.getPontos().get(0);
-			
+
 			for (RetaGr rt : area_recorte.calcularRetas()) {
 
 				if (OperacoesMatematicas.interseccaoRetas(rt.getReta(), new Reta(p_corrente, p_proximo)) != null) {
 
-					pontos.add(
-							OperacoesMatematicas.interseccaoRetas(rt.getReta(), new Reta(p_corrente, p_proximo)));
+					pontos.add(OperacoesMatematicas.interseccaoRetas(rt.getReta(), new Reta(p_corrente, p_proximo)));
 
 					break;
 
 				}
 
 			}
-			
-			if(pontos.size() >= 1 ) {
-				
+
+			if (pontos.size() >= 1) {
+
 				poligonosResultantes.add(new PoligonoGr(new ArrayList<Ponto>(pontos), p.getCor()));
-				
+
 			}
-			
+
 		}
 
 		return poligonosResultantes;
