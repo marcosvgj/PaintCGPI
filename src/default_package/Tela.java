@@ -282,36 +282,62 @@ public class Tela {
 
 			if (formas.get(i) instanceof PoligonoGr) {
 
-				tools.recorte.WeilerAthertonPolygon recorte = new tools.recorte.WeilerAthertonPolygon(area);
+				PoligonoGr pl = (PoligonoGr) formas.get(i);
 
-				if (recorte.recortar((PoligonoGr) formas.get(i)) != null) {
+				if (pl.getPoligonoFechado() == true) {
 
-					exclusao.add((PoligonoGr) formas.get(i));
+					tools.recorte.WeilerAthertonPolygon recorte = new tools.recorte.WeilerAthertonPolygon(area);
 
-					for (PoligonoGr polig : recorte.recortar((PoligonoGr) formas.get(i))) {
+					if (recorte.recortar((PoligonoGr) formas.get(i)) != null) {
 
-						novasFormas.add(polig);
+						exclusao.add((PoligonoGr) formas.get(i));
+
+						for (PoligonoGr polig : recorte.recortar((PoligonoGr) formas.get(i))) {
+
+							novasFormas.add(polig);
+
+						}
+
+					} else {
+
+						formas.set(i, new PoligonoGr(new ArrayList<Ponto>(), Color.WHITE));
+
+					}
+				} else {
+
+					List<Ponto> pontos = new ArrayList<Ponto>();
+
+					for (RetaGr rt : pl.calcularRetas()) {
+
+						if (recorteReta.recortar(rt) != null) {
+
+							RetaGr newReta = recorteReta.recortar(rt);
+
+							pontos.add(newReta.getReta().getP1());
+
+							pontos.add(newReta.getReta().getP2());
+
+						}
 
 					}
 
-				} else {
-
-					formas.set(i, new PoligonoGr(new ArrayList<Ponto>(), Color.WHITE));
+					formas.set(i, new PoligonoGr(new ArrayList<Ponto>(pontos), pl.getCor()));
 
 				}
 
 			}
+
 			if (formas.get(i) instanceof CirculoGr) {
-				for(RetaGr r: area.calcularRetas()) {
-					
+				for (RetaGr r : area.calcularRetas()) {
+
 					CirculoGr c0 = (CirculoGr) formas.get(i);
-					
+
 					List<Ponto> op = OperacoesMatematicas.interseccaoRetaCirculo(r.getReta(), c0.getCirculo());
-					
-					for(Ponto p: op) {
+
+					for (Ponto p : op) {
 						System.out.println(p);
-						PontoGr pNovo = new PontoGr((int) p.getX(),(int)  p.getY(), Color.RED, 10);
-						
+						PontoGr pNovo = new PontoGr((int) p.getX(), (int) p.getY(), Color.RED, 10);
+
 						pNovo.desenharPonto(gc);
 					}
 				}
